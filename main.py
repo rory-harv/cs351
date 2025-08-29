@@ -16,4 +16,5 @@ def merge_sort(arr):
 
 
 if __name__ == "__main__":
-    pass
+    time_algorithm()
+    
