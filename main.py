@@ -10,6 +10,9 @@ def time_algorithm(algo, arr):
 
 # Starter code
 def selection_sort(arr):
+
+    start_time = time.perf_counter()
+
     length = len(arr)
 
     for i in range(length):
@@ -20,9 +23,14 @@ def selection_sort(arr):
 
         (arr[i], arr[min_index]) = (arr[min_index], arr[i])
 
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+
     return arr
 
 def merge_sort(arr):
+
+    start_time = time.perf_counter()
 
     if len(arr) == 1:
         return arr
@@ -32,9 +40,9 @@ def merge_sort(arr):
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
 
-    return merge(left, right)
+    return merge(left, right, start_time)
 
-def merge(left, right):
+def merge(left, right, start_time):
     result = []
     i = j = 0
 
@@ -49,33 +57,13 @@ def merge(left, right):
     result += left[i:]
     result += right[j:]
 
+    end_time = time.perf_counter()
+    elapsed_time = end_time - start_time
+
+    print(elapsed_time)
     return result
-
-def plotting_linear(arr, n):
-    xpoints = []
-    i = 1
-    for i in range(n):
-        xpoints.append(i)
     
-    runtimes = []
-
-    for i in range(5):
-        runtimes.append(time_algorithm(arr))
-    
-    sum = 0
-    for i in range(len(runtimes)):
-        sum += runtimes[i]
-    average = sum / len(arr)
-
-    ypoints = [0, average]
-
-    plt.plot(xpoints, ypoints)
-    plt.show()
-    
-
-    
-    
-
+  
 
 
 
@@ -83,5 +71,5 @@ if __name__ == "__main__":
     random.seed(42)
     n = [100, 500, 1000, 5000]
     random_array = np.random.randint(1, n[0], size = n[0])
-    plotting_linear(random_array, len(random_array))
-    
+
+    merge_sort(random_array)
