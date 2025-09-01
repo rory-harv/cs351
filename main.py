@@ -1,4 +1,7 @@
 import time
+import random 
+import numpy as np
+import matplotlib.pyplot as plt
 
 def time_algorithm(algo, arr):
     start = time.time()
@@ -7,8 +10,17 @@ def time_algorithm(algo, arr):
 
 # Starter code
 def selection_sort(arr):
-    # TODO: Implement
-    pass
+    length = len(arr)
+
+    for i in range(length):
+        min_index = i
+        for j in range(i + 1, length):
+            if arr[j] < arr[min_index]:
+                min_index = j
+
+        (arr[i], arr[min_index]) = (arr[min_index], arr[i])
+
+    return arr
 
 def merge_sort(arr):
 
@@ -39,7 +51,37 @@ def merge(left, right):
 
     return result
 
+def plotting_linear(arr, n):
+    xpoints = []
+    i = 1
+    for i in range(n):
+        xpoints.append(i)
+    
+    runtimes = []
+
+    for i in range(5):
+        runtimes.append(time_algorithm(arr))
+    
+    sum = 0
+    for i in range(len(runtimes)):
+        sum += runtimes[i]
+    average = sum / len(arr)
+
+    ypoints = [0, average]
+
+    plt.plot(xpoints, ypoints)
+    plt.show()
+    
+
+    
+    
+
+
+
+
 if __name__ == "__main__":
-    array = [6,2,4,8]
-    print(merge_sort(array))
+    random.seed(42)
+    n = [100, 500, 1000, 5000]
+    random_array = np.random.randint(1, n[0], size = n[0])
+    plotting_linear(random_array, len(random_array))
     
