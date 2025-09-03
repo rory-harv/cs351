@@ -24,25 +24,24 @@ def selection_sort(arr):
         (arr[i], arr[min_index]) = (arr[min_index], arr[i])
 
     end_time = time.perf_counter()
-    elapsed_time = end_time - start_time
 
+    elapsed = end_time - start_time
+    
     return arr
 
 def merge_sort(arr):
 
-    start_time = time.perf_counter()
-
-    if len(arr) == 1:
+    if len(arr) <= 1:
         return arr
 
     mid = len(arr) // 2
     
     left = merge_sort(arr[:mid])
     right = merge_sort(arr[mid:])
+    
+    return merge(left, right)
 
-    return merge(left, right, start_time)
-
-def merge(left, right, start_time):
+def merge(left, right):
     result = []
     i = j = 0
 
@@ -54,13 +53,10 @@ def merge(left, right, start_time):
             result.append(right[j])
             j += 1
 
-    result += left[i:]
-    result += right[j:]
+    
+    result.extend(left[i:])
+    result.extend(right[j:])
 
-    end_time = time.perf_counter()
-    elapsed_time = end_time - start_time
-
-    print(elapsed_time)
     return result
     
   
@@ -70,6 +66,6 @@ def merge(left, right, start_time):
 if __name__ == "__main__":
     random.seed(42)
     n = [100, 500, 1000, 5000]
-    random_array = np.random.randint(1, n[0], size = n[0])
+    random_array = random.sample(range(1,(n[0]+1)), n[0])
 
-    merge_sort(random_array)
+    print(merge_sort(random_array))
