@@ -145,6 +145,71 @@ def analyze_brute_force_iterations(n: int) -> None:
     print(f"\nVerification: {total} = {calculated} ✓")
 
 
+def visualize_arithmetic_series() -> None:
+    """Visualize how the inner loop iterations form an arithmetic series"""
+    
+    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
+    
+    
+    # Subplot 1: Compare array size to runtime
+    sizes, times, coms = run_experiments()
+    
+    ax3.plot(sizes, times, 'bo-', label='Array Size', markersize=8)
+    ax3.set_xlabel('Array Size (n)')
+    ax3.set_ylabel('Runtimes')
+    ax3.set_title('Arrazy Size vs. Runtime')
+    ax3.legend()
+    ax3.grid(True, alpha=0.3)
+    
+    # Subplot 2: array size to comparisons
+    exact = []
+    n_cubed = []
+    n_cubed_sixth = []
+    for size in sizes:
+        exact.append(size * (size - 1) * (size - 2) / 6)
+        n_cubed.append(size ** 3)
+        n_cubed_sixth.append(size ** 3 / 6)
+    
+    ax4.plot(sizes, exact, 'b-', label='Array Size', linewidth=2)
+    ax4.plot(sizes, n_cubed_sixth, 'g--', label='n^3/6', linewidth=2)
+    ax4.plot(sizes, n_cubed, 'r:', label='n^3', linewidth=2)
+    ax4.set_xlabel('Array Size (n)')
+    ax4.set_ylabel('Operations')
+    ax4.set_title('Why We Say O(n^3): Asymptotic Behavior')
+    ax4.legend()
+    ax4.grid(True, alpha=0.3)
+    
+    # Add annotation
+    ax4.annotate('As n grows, n(n-1)(n-2)/6 ≈ n^3/6',
+                xy=(35, 35**3/6), xytext=(25, 800),
+                arrowprops=dict(arrowstyle='->', color='blue'),
+                fontsize=11, color='blue')
+    
+    plt.tight_layout()
+    plt.show()
+
+
+def growth_rate(sizes):
+
+    measures = []
+    for i in range(len(sizes)-2):
+        first = i * (i - 1) * (i - 2) / 6
+        second = (i + 1) * i * (i - 1) / 6
+        change = (second - first) / ((i+1) - i)
+        measures.append(change)
+    
+    print(f"{'Array Size (n)':<15} {'Expected Runtime Ratio':<30} {'My Ratio':<20}")
+    print(f"{'100 -> 200':<15} {'8x slower (2³)':<30} {f"{measures[0]}":<20}")
+    print(f"{'200 -> 400':<15} {'8x slower (2³)':<30} {f"{measures[1]}":<20}")
+    print(f"{'400 -> 800':<15} {'8x slower (2³)':<30} {f"{measures[2]}":<20}")
+
+
+
+    
+    
+    
+
+
 
 
 if __name__ == "__main__":
@@ -169,6 +234,10 @@ if __name__ == "__main__":
     # Run the experiments
     sizes, times, coms = run_experiments()
 
-    # Demonstrate with different sizes
-    for i in range(len(sizes)):
-        analyze_brute_force_iterations(sizes[i])
+    # # Demonstrate with different sizes
+    # for i in range(len(sizes)):
+    #     analyze_brute_force_iterations(sizes[i])
+
+    # visualize_arithmetic_series()
+
+    growth_rate(sizes)
