@@ -17,9 +17,9 @@ def three_sum_brute_force(arr):
 
     for i in range(n-2):    # loop through without going out of bounds/double evaluating elements
         for j in range(i + 1, n):   # not double evaluating same first index
-            for k in range(j + 1, n):   # not double evaluating same first index
+            for k in range(j + 1, n):   # not double evaluating same second index
                 comparisons += 1
-                if arr[i] + arr[j] + arr[k] == target:
+                if arr[i] + arr[j] + arr[k] == target:  # checks if target is met
                     count += 1
     
     return count, comparisons
@@ -145,14 +145,13 @@ def analyze_brute_force_iterations(n: int) -> None:
     print(f"\nVerification: {total} = {calculated} ✓")
 
 
-def visualize_arithmetic_series() -> None:
+def visualize_arithmetic_series(sizes, times) -> None:
     """Visualize how the inner loop iterations form an arithmetic series"""
     
     fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
     
     
     # Subplot 1: Compare array size to runtime
-    sizes, times, coms = run_experiments()
     
     ax3.plot(sizes, times, 'bo-', label='Array Size', markersize=8)
     ax3.set_xlabel('Array Size (n)')
@@ -193,19 +192,15 @@ def growth_rate(sizes):
 
     measures = []
     for i in range(len(sizes)-2):
-        first = i * (i - 1) * (i - 2) / 6
-        second = (i + 1) * i * (i - 1) / 6
-        change = (second - first) / ((i+1) - i)
+        first = sizes[i] * (sizes[i] - 1) * (sizes[i] - 2) / 6
+        second = (sizes[i] + 1) * sizes[i] * (sizes[i] - 1) / 6
+        change = (second - first) / ((sizes[i+1]) - sizes[i])
         measures.append(change)
     
     print(f"{'Array Size (n)':<15} {'Expected Runtime Ratio':<30} {'My Ratio':<20}")
     print(f"{'100 -> 200':<15} {'8x slower (2³)':<30} {f"{measures[0]}":<20}")
     print(f"{'200 -> 400':<15} {'8x slower (2³)':<30} {f"{measures[1]}":<20}")
     print(f"{'400 -> 800':<15} {'8x slower (2³)':<30} {f"{measures[2]}":<20}")
-
-
-
-    
     
     
 
@@ -238,6 +233,6 @@ if __name__ == "__main__":
     # for i in range(len(sizes)):
     #     analyze_brute_force_iterations(sizes[i])
 
-    # visualize_arithmetic_series()
+    visualize_arithmetic_series(sizes, times)
 
     growth_rate(sizes)
