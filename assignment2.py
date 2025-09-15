@@ -137,17 +137,19 @@ def analyze_brute_force_iterations(n: int) -> None:
     print("\nUsing the arithmetic series formula:")
     print("Sum of 1 to k = k(k+1)/2")
     print("Take 3 iterations (3 'for' loops)")
-    print("Outer loop range: (n-2)")
+    print("Outer loop range: (n-2) --> based on loop range where i is limited to (n-2)")
     print("First inner loop: (n-1) --> based on loop range (i+1) becomes (n-1)")
     print("Second inner loop: (n) --> based on loop range (j+1) becomes (n)")
-    print("Three inner loops, so denominator of 2 becomes 6")
+    print("Three total 'for' loops, so denominator of 2 becomes 6")
     print(f"\nTherefore: S = O(n^3) = n(n-1)(n-2)/6 = ((n-2)(n-1)(n))/6")
     print(f"           S = O(n^3) = (n^3-3n^2+2n)/6")
     print(f"           Remove all lower ordered terms and constants.")
     print(f"           S = O({n**3}) = {n**3}")
+    print()
     print("Space Complexity: O(1).")
     print("The space complexity is O(1) since each triplet comparison within the 'for' loops accesses an index directly with the arr[i]/arr[j]/arr[k] call, which is a constant complexity.")
-    
+    print()
+    print("Best case scenario: ")
     # Verify
     calculated = (n-1) * n // 2
     print(f"\nVerification: {total} = {calculated} ✓")
@@ -156,7 +158,7 @@ def analyze_brute_force_iterations(n: int) -> None:
 def visualize_arithmetic_series(sizes, times) -> None:
     """Visualize how the inner loop iterations form an arithmetic series"""
     
-    fig, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
+    fig, ((ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
     
     
     # Subplot 1: Compare array size to runtime
