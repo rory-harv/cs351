@@ -136,9 +136,12 @@ def analyze_brute_force_iterations(n: int) -> None:
     print("This is the sum of first (n-1) natural numbers")
     print("\nUsing the arithmetic series formula:")
     print("Sum of 1 to k = k(k+1)/2")
-    print(f"\nTherefore: S = (n-1)((n-1)+1)/2")
-    print(f"           S = (n-1)(n)/2")
-    print(f"           S = {(n-1)*n//2}")
+    print(f"\nTherefore: S = O(n^3) = n(n-1)(n-2)/6")
+    print(f"           S = O(n^3) = n^3 - 3n^2 + 2n")
+    print(f"           Remove all lower ordered terms and constants.")
+    print(f"           S = O({n**3}) = {n**3}")
+    print("Space Complexity: O(1).")
+    print("The space complexity is O(1) since each triplet comparison within the for loops accesses an index directly with the arr[i] call, which is a constant complexity.")
     
     # Verify
     calculated = (n-1) * n // 2
