@@ -70,7 +70,7 @@ def run_experiments():
         coms.append(avg_comps)
         print(f"{n:10}{avg_time:20.4f}{avg_comps:20}")
     
-    return sizes, times, coms
+    return sizes, times, coms   # basis for all testing
 
 
 def analyze_brute_force_iterations(n: int) -> None:
@@ -104,7 +104,7 @@ def analyze_brute_force_iterations(n: int) -> None:
         
         if i < 5 or i == n-2:  # Show first few and last
             if j_start <= j_end:
-                if k_start <= k_end:
+                if k_start <= k_end:    # evaluates if k is done within the conditional
                     print(f"{i:<10} {f'{j_start} to {j_end}':<20} {f'{k_start} to {k_end}':<20} {count:<15}")
                 else:
                     print(f"{i:<10} {f'{j_start} to {j_end}':<20} {'(none)':<20} {count:<15}")
@@ -149,7 +149,12 @@ def analyze_brute_force_iterations(n: int) -> None:
     print("Space Complexity: O(1).")
     print("The space complexity is O(1) since each triplet comparison within the 'for' loops accesses an index directly with the arr[i]/arr[j]/arr[k] call, which is a constant complexity.")
     print()
-    print("Best case scenario: ")
+    print("Best case scenario: O(n^2). You have to sort through the array, then traverse the three 'for' loops, but the sorted array reduces the overall time complexity since the most inner 'for' loop will be pre-sorted.")
+    print("Average scenario: O(n^3). The array is most likely randomized, so you have to traverse the three 'for' loops completely.")
+    print("Worst case scenario: O(n^3). The array is unsorted, and you have to fully traverse through the three 'for' loops. ")
+    print("Worst case scenario matters most here because, if the array is large, you are spending exponentially more time traversing through the array, when you could be using a solution that has a more efficient worst case time complexity. ")
+
+
     # Verify
     calculated = (n-1) * n // 2
     print(f"\nVerification: {total} = {calculated} ✓")
@@ -158,17 +163,17 @@ def analyze_brute_force_iterations(n: int) -> None:
 def visualize_arithmetic_series(sizes, times) -> None:
     """Visualize how the inner loop iterations form an arithmetic series"""
     
-    fig, ((ax3, ax4)) = plt.subplots(2, 2, figsize=(14, 10))
+    fig, axes = plt.subplots(1, 2, figsize=(14, 10))
     
     
     # Subplot 1: Compare array size to runtime
     
-    ax3.plot(sizes, times, 'bo-', label='Array Size', markersize=8)
-    ax3.set_xlabel('Array Size (n)')
-    ax3.set_ylabel('Runtimes')
-    ax3.set_title('Arrazy Size vs. Runtime')
-    ax3.legend()
-    ax3.grid(True, alpha=0.3)
+    axes[0].plot(sizes, times, 'bo-', label='Array Size', markersize=8)
+    axes[0].set_xlabel('Array Size (n)')
+    axes[0].set_ylabel('Runtimes')
+    axes[0].set_title('Arrazy Size vs. Runtime')
+    axes[0].legend()
+    axes[0].grid(True, alpha=0.3)
     
     # Subplot 2: array size to comparisons
     exact = []
@@ -179,17 +184,17 @@ def visualize_arithmetic_series(sizes, times) -> None:
         n_cubed.append(size ** 3)
         n_cubed_sixth.append(size ** 3 / 6)
     
-    ax4.plot(sizes, exact, 'b-', label='Array Size', linewidth=2)
-    ax4.plot(sizes, n_cubed_sixth, 'g--', label='n^3/6', linewidth=2)
-    ax4.plot(sizes, n_cubed, 'r:', label='n^3', linewidth=2)
-    ax4.set_xlabel('Array Size (n)')
-    ax4.set_ylabel('Operations')
-    ax4.set_title('Why We Say O(n^3): Asymptotic Behavior')
-    ax4.legend()
-    ax4.grid(True, alpha=0.3)
+    axes[1].plot(sizes, exact, 'b-', label='Array Size', linewidth=2)
+    axes[1].plot(sizes, n_cubed_sixth, 'g--', label='n^3/6', linewidth=2)
+    axes[1].plot(sizes, n_cubed, 'r:', label='n^3', linewidth=2)
+    axes[1].set_xlabel('Array Size (n)')
+    axes[1].set_ylabel('Operations')
+    axes[1].set_title('Why We Say O(n^3): Asymptotic Behavior')
+    axes[1].legend()
+    axes[1].grid(True, alpha=0.3)
     
     # Add annotation
-    ax4.annotate('As n grows, n(n-1)(n-2)/6 ≈ n^3/6',
+    axes[1].annotate('As n grows, n(n-1)(n-2)/6 ≈ n^3/6',
                 xy=(35, 35**3/6), xytext=(25, 800),
                 arrowprops=dict(arrowstyle='->', color='blue'),
                 fontsize=11, color='blue')
@@ -200,24 +205,23 @@ def visualize_arithmetic_series(sizes, times) -> None:
 
 def growth_rate(sizes):
 
-    measures = []
+    measures = []   # creates blank list to store ratios
     for i in range(len(sizes)-2):
         first = sizes[i] * (sizes[i] - 1) * (sizes[i] - 2) / 6
         second = (sizes[i] + 1) * sizes[i] * (sizes[i] - 1) / 6
-        change = (second - first) / ((sizes[i+1]) - sizes[i])
+        change = (second - first) / ((sizes[i+1]) - sizes[i])   # computes change in runtime between each trial size
         measures.append(change)
     
-    print(f"{'Array Size (n)':<15} {'Expected Runtime Ratio':<30} {'My Ratio':<20}")
+    print(f"{'Array Size (n)':<15} {'Expected Runtime Ratio':<30} {'My Ratio':<20}")    # displays runtime comparisons
     print(f"{'100 -> 200':<15} {'8x slower (2³)':<30} {f"{measures[0]}":<20}")
     print(f"{'200 -> 400':<15} {'8x slower (2³)':<30} {f"{measures[1]}":<20}")
     print(f"{'400 -> 800':<15} {'8x slower (2³)':<30} {f"{measures[2]}":<20}")
     
     
 
-
-
-
 if __name__ == "__main__":
+    """ initiates all aspects of the assignment to be returned. """
+
     target = 0
     # Test the brute force solution
     test_arrays = [
@@ -228,20 +232,20 @@ if __name__ == "__main__":
     [0, 0, 0, 0]
     ]
 
-    # for arr in test_arrays:
-    #     result, comps = three_sum_brute_force(arr)
-    #     print(f"Array: {arr}")
-    #     print(f"  Target-sum pairs: {result}")
-    #     print(f"  Comparisons made: {comps}")
-    #     print()
+    for arr in test_arrays: # 5 base trials with test arrays
+        result, comps = three_sum_brute_force(arr)
+        print(f"Array: {arr}")
+        print(f"  Target-sum pairs: {result}")
+        print(f"  Comparisons made: {comps}")
+        print()
 
 
     # Run the experiments
     sizes, times, coms = run_experiments()
 
-    # # Demonstrate with different sizes
-    # for i in range(len(sizes)):
-    #     analyze_brute_force_iterations(sizes[i])
+    # Demonstrate with different sizes
+    for i in range(len(sizes)):
+       analyze_brute_force_iterations(sizes[i])
 
     visualize_arithmetic_series(sizes, times)
 
